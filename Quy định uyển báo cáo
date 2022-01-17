@@ -1,0 +1,22 @@
+Giới thiệu đề tài 
+ - Giới thiệu tổng quan về ứng dụng
+ - Công nghệ sử dụng : Flutter, package nào, API, Database
+Phân tích thiết kế
+ - Phân tính sơ đồ chức năng (usecase)
+ - Phân tính cơ sở dữ liệu (Mô hình CSDL quan hệ)
+ -> hình ảnh, mô tả cụ thể
+Kết quả cài đặt
+ - giống hướng dẫn sử dụng
+ - Liệt kê các màn hình ứng dụng mà đã được cài đặt
+ - Mô tả thao tác sử dụng trên màn hình
+ - Không cần source code trong cuốn báo cáo 
+Kết luận
+ - Những gì đã đạt được, chưa đạt được
+ - Hướng phát triển tiếp tục
+ - Phân công công việc giữa các thành viên ( Tên , công việc , tỉ lệ hoàn thành)
+ - show history
+
+- In 2 mặt, không màu,
+- Canh lề: Trái 3.5cm, Trên-Dưới-Phải: 3cm
+- Font : Times New Roman 13, tiều đề 16
+- mục lục: Nội dung, hình ảnh, bảng biểu 
