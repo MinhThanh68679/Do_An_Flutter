@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DoAn\\Do_An_Flutter\\WebAPI\\WebAPI\\WebAPI.csproj": {}
+    "D:\\App\\Do_An_Flutter\\WebAPI\\WebAPI\\WebAPI.csproj": {}
   },
   "projects": {
-    "D:\\DoAn\\Do_An_Flutter\\WebAPI\\WebAPI\\WebAPI.csproj": {
+    "D:\\App\\Do_An_Flutter\\WebAPI\\WebAPI\\WebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DoAn\\Do_An_Flutter\\WebAPI\\WebAPI\\WebAPI.csproj",
+        "projectUniqueName": "D:\\App\\Do_An_Flutter\\WebAPI\\WebAPI\\WebAPI.csproj",
         "projectName": "WebAPI",
-        "projectPath": "D:\\DoAn\\Do_An_Flutter\\WebAPI\\WebAPI\\WebAPI.csproj",
+        "projectPath": "D:\\App\\Do_An_Flutter\\WebAPI\\WebAPI\\WebAPI.csproj",
         "packagesPath": "C:\\Users\\Kou\\.nuget\\packages\\",
-        "outputPath": "D:\\DoAn\\Do_An_Flutter\\WebAPI\\WebAPI\\obj\\",
+        "outputPath": "D:\\App\\Do_An_Flutter\\WebAPI\\WebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
