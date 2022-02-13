@@ -12,9 +12,9 @@ namespace WebAPI.Services
     public interface IUserService
     {
         Task<IEnumerable<CKhachHang>> GetList();
-        Task<Mess_Response> Sign_Up(SignUp_Request user);
-        Task<Mess_Response> Sign_In(Login_Request user);
-        Task<Mess_Response> Update_User(CKhachHang update_user);
+        Task<CKhachHang> Sign_Up(SignUp_Request user);
+        Task<CKhachHang> Sign_In(Login_Request user);
+        Task<CKhachHang> Update_User(CKhachHang update_user);
     }
 
     public class UserService : IUserService
@@ -32,32 +32,20 @@ namespace WebAPI.Services
             return result;
         }
 
-        public async Task<Mess_Response> Sign_In(Login_Request user)
+        public async Task<CKhachHang> Sign_In(Login_Request user)
         {
-            var response = new Mess_Response();
             var result = await _context.KhachHangs.FirstOrDefaultAsync(u => u.Email == user.User);
             if (result != null)
             {
-                if (user.Pass == result.Pass)
-                {
-                    response.Mess = "Success";
-                    response.Do = "Sign in";
-                }
-                else
-                {
-                    response.Mess = "Pass don't correct";
-                    response.Do = "Sign in";
-                }
+                return result;
             }
             else
             {
-                response.Mess = "Don't have account with email "+ user.User;
-                response.Do = "Sign in";
+                return null;
             }
-            return response;
         }
 
-        public async Task<Mess_Response> Sign_Up(SignUp_Request user)
+        public async Task<CKhachHang> Sign_Up(SignUp_Request user)
         {
             int count = _context.KhachHangs.Count();
             var newuser = new CKhachHang
@@ -73,14 +61,12 @@ namespace WebAPI.Services
             };
             var result = await _context.KhachHangs.AddAsync(newuser);
             await _context.SaveChangesAsync();
-            var response = new Mess_Response { Mess = "Sucees", Do = "Sign Up"};
-            return response;
+            return newuser;
         }
 
-        public async Task<Mess_Response> Update_User(CKhachHang update_user)
+        public async Task<CKhachHang> Update_User(CKhachHang update_user)
         {
             var user = await _context.KhachHangs.FirstOrDefaultAsync(u => u.MaKH == update_user.MaKH);
-            var response = new Mess_Response();
             if(user != null)
             {
                 user.TenKH = update_user.TenKH;
@@ -89,17 +75,13 @@ namespace WebAPI.Services
                 user.SDT = update_user.SDT;
                 user.Pass = update_user.Pass;
                 user.Avatar = update_user.Avatar;
-
                 await _context.SaveChangesAsync();
-                response.Mess = "Success";
-                response.Do = "Update";
+                return user;
             }
             else
             {
-                response.Mess = "Don't have user with this ID:" + update_user.MaKH;
-                response.Do = "Update";
+                return null;
             }
-            return response;
         }
     }
 }

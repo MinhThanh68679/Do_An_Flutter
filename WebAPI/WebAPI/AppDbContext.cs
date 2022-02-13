@@ -59,9 +59,9 @@ namespace WebAPI
             modelBuilder.Entity<CHoaDon>().HasData(new CHoaDon { MaHD = "HD03", KhachHangMaKH = "Admin_2", NgayGiao = new DateTime(2022, 1, 28), GhiChu = "Note about alternative recipient", TongTien = 60, Update_Date = new DateTime(2021, 12, 28), Delete_Date = new DateTime(2021, 12, 28), Status = 1 });
             //Seed CChiTietHoaDon
             modelBuilder.Entity<CChiTietHoaDon>().HasData(new CChiTietHoaDon { HoaDonMaHD = "HD01", SanPhamMaSp = "SP_1", SL=1,DonGia=30,ThanhTien=30});
-            modelBuilder.Entity<CChiTietHoaDon>().HasData(new CChiTietHoaDon { HoaDonMaHD = "HD02", SanPhamMaSp = "SP_2", SL=1,DonGia=30,ThanhTien=30});
-            modelBuilder.Entity<CChiTietHoaDon>().HasData(new CChiTietHoaDon { HoaDonMaHD = "HD02", SanPhamMaSp = "SP_3", SL=1,DonGia=30,ThanhTien=30});
-            modelBuilder.Entity<CChiTietHoaDon>().HasData(new CChiTietHoaDon { HoaDonMaHD = "HD03", SanPhamMaSp = "SP_4", SL=2,DonGia=30,ThanhTien=60});
+            modelBuilder.Entity<CChiTietHoaDon>().HasData(new CChiTietHoaDon { HoaDonMaHD = "HD02", SanPhamMaSp = "SP_2", SL =1,DonGia=30,ThanhTien=30});
+            modelBuilder.Entity<CChiTietHoaDon>().HasData(new CChiTietHoaDon { HoaDonMaHD = "HD02", SanPhamMaSp = "SP_3", SL =1,DonGia=30,ThanhTien=30});
+            modelBuilder.Entity<CChiTietHoaDon>().HasData(new CChiTietHoaDon { HoaDonMaHD = "HD03", SanPhamMaSp = "SP_4", SL =2,DonGia=30,ThanhTien=60});
             //Seed CGioHang
             modelBuilder.Entity<CGioHang>().HasData(new CGioHang { KhachHangMaKH = "Admin_1", SanPhamMaSP ="SP_4", Update_Date = new DateTime(2022, 1, 1), Status= true });
             modelBuilder.Entity<CGioHang>().HasData(new CGioHang { KhachHangMaKH = "Admin_3", SanPhamMaSP ="SP_1", Update_Date = new DateTime(2022, 1, 1), Status= true });

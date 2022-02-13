@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Request;
 using WebAPI.Services;
 
 namespace WebAPI.Controllers
@@ -25,6 +26,20 @@ namespace WebAPI.Controllers
             try
             {
                 var result = await _service.GetList_Bill();
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost("AddBill")]
+        public async Task<IActionResult> AddBill( AddBill_request requests)
+        {
+            try
+            {
+                var result = await _service.BuySP(requests);
                 return Ok(result);
             }
             catch (Exception)
