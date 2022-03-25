@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -55,7 +55,14 @@ namespace WebAPI.Controllers
             try
             {
                 var result = await _userService.Sign_In(user);
-                return Ok(result);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest(result);
+                }
             }
             catch (Exception)
             {

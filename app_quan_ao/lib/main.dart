@@ -1,5 +1,6 @@
 // import 'package:app_quan_ao/pages/shop_screen/shop_screen.dart';
 import 'package:app_quan_ao/pages/Home/home_screen.dart';
+import 'package:app_quan_ao/pages/registration_screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {

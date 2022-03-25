@@ -11,6 +11,7 @@ namespace WebAPI.Services
     public interface ICartService
     {
         //CHoaDOn
+        Task<CHoaDon> AddBill(AddListBill_request request);
         Task<CHoaDon> BuySP(AddBill_request request);
         Task<IEnumerable<CHoaDon>> GetList_Bill();
         Task<IEnumerable<CHoaDon>> GetList_Bill_ByIdUser(String Id);
@@ -18,6 +19,7 @@ namespace WebAPI.Services
         Task<IEnumerable<CChiTietHoaDon>> GetList_BillDetail();
         Task<IEnumerable<CChiTietHoaDon>> GetList_BillDetail_ByBillId(String Id);
         //GioHang
+        Task<CGioHang> AddCart(AddCart_request request);
         Task<IEnumerable<CGioHang>> GetList_Cart();
         Task<IEnumerable<CGioHang>> GetList_Cart_ByIdUser(String Id);
 
@@ -76,15 +78,66 @@ namespace WebAPI.Services
                 KhachHangMaKH = request.MaKH,
             };
             await _context.HoaDons.AddAsync(newBill);
-            await _context.SaveChangesAsync();
 
             var newBillDetail = new CChiTietHoaDon();
             newBillDetail.SanPhamMaSp = request.MaSP;
-            newBillDetail.SL = request.SL;
+            newBillDetail.SL = request.Sl ;
             newBillDetail.HoaDonMaHD = newBill.MaHD;
+            newBillDetail.DonGia = request.DonGia ;
+            newBillDetail.ThanhTien = request.ThanhTien;
             await _context.ChiTietHoaDons.AddAsync(newBillDetail);
+            var Product = await _context.ChiTietSanPhams.FirstOrDefaultAsync(p => p.SanPhamMaSP == request.MaSP);
+            Product.SL -= request.Sl;
+            newBill.TongTien = request.ThanhTien;
             await _context.SaveChangesAsync();
             return newBill;
+        }
+
+        public async Task<CHoaDon> AddBill(AddListBill_request request)
+        {
+            int count = _context.HoaDons.Count();
+            double TongTien = 0;
+            var newBill = new CHoaDon
+            {
+                MaHD = "HD_" + count.ToString(),
+                KhachHangMaKH = request.MaKH,
+                Update_Date = DateTime.Now,
+            };
+            await _context.HoaDons.AddAsync(newBill);
+
+
+            foreach (var item in request.Products)
+            {
+                var Product = await _context.ChiTietSanPhams.FirstOrDefaultAsync(p => p.SanPhamMaSP == item.MaSP);
+                var newDetailBill = new CChiTietHoaDon
+                {
+                    HoaDonMaHD = newBill.MaHD,
+                    SanPhamMaSp = item.MaSP,
+                    SL = item.Sl,
+                    DonGia = Product.DonGia,
+                    ThanhTien = Product.DonGia * item.Sl,
+                };
+                TongTien += newDetailBill.ThanhTien;
+                await _context.ChiTietHoaDons.AddAsync(newDetailBill);
+            }
+
+            newBill.TongTien = TongTien;
+            await _context.SaveChangesAsync();
+
+            return newBill;
+        }
+
+        public async Task<CGioHang> AddCart(AddCart_request request)
+        {
+            var newitemCart = new CGioHang
+            {
+                KhachHangMaKH = request.MaKH,
+                SanPhamMaSP = request.MaSP,
+                Status = true,
+            };
+            await _context.GioHangs.AddAsync(newitemCart);
+            await _context.SaveChangesAsync();
+            return newitemCart;
         }
     }
 }

@@ -1,3 +1,5 @@
+import 'package:app_quan_ao/Network/GetList.dart';
+import 'package:app_quan_ao/model/CChiTietSanPham.dart';
 import 'package:flutter/material.dart';
 import 'package:app_quan_ao/constant.dart';
 
@@ -15,6 +17,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  late List<ChiTietSanPham> list;
+  @override
+  void initState() {
+    super.initState();
+    GetList.fetchCTSP().then((datafromServer) {
+       setState(() {
+         list = datafromServer;
+       });
+     });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SafeArea(
         child: ListView(
-          children: const [
+          children: [
             //appbar
             CustomAppbar(),
             SizedBox(
@@ -39,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             //now we create model of our app food products and we import all images
-            ShopCard(),
+            ShopCard(CTSPs: list,),
           ],
         ),
       ),

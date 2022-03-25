@@ -56,7 +56,7 @@ namespace WebAPI.Services
                 Email = user.Email,
                 SDT = user.Phone,
                 Pass = user.Pass,
-                Avatar = user.Avatar,
+                Avatar = "assets/images/profile_1.png",
                 Status = true,
             };
             var result = await _context.KhachHangs.AddAsync(newuser);
@@ -70,11 +70,8 @@ namespace WebAPI.Services
             if(user != null)
             {
                 user.TenKH = update_user.TenKH;
-                user.DiaChi = update_user.DiaChi;
                 user.Email = update_user.Email;
                 user.SDT = update_user.SDT;
-                user.Pass = update_user.Pass;
-                user.Avatar = update_user.Avatar;
                 await _context.SaveChangesAsync();
                 return user;
             }

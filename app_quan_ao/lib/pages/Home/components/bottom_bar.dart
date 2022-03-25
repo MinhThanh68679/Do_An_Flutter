@@ -1,3 +1,4 @@
+import 'package:app_quan_ao/pages/registration_screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:app_quan_ao/constant.dart';
 import 'package:app_quan_ao/pages/Home/home_screen.dart';
@@ -80,7 +81,7 @@ class CustomBottomBar extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const ProfileScreen()));
+                      builder: (context) => const LoginScreen()));
             },
             icon: Icon(
               Icons.person_outline,
