@@ -1,12 +1,21 @@
+import 'package:app_quan_ao/Network/GetList.dart';
+import 'package:app_quan_ao/model/CChiTietSanPham.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:app_quan_ao/constant.dart';
 import 'package:app_quan_ao/model/shop_model.dart';
 import 'package:app_quan_ao/pages/Home/detail_screen/detail_screen.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class ShopCard extends StatelessWidget {
   const ShopCard({
     Key? key,
-  }) : super(key: key);
+    required this.CTSPs,
+  }) : super(key: key); 
+
+  final List<ChiTietSanPham> CTSPs;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +24,7 @@ class ShopCard extends StatelessWidget {
       child: GridView.builder(
           shrinkWrap: true,
           physics: ScrollPhysics(),
-          itemCount: shopProducts.length,
+          itemCount: CTSPs.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 0.64,
@@ -28,10 +37,10 @@ class ShopCard extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => DetailScreen(
-                                shopDetail: shopProducts[index],
+                                shopDetail: CTSPs[index],
                               )));
                 },
-                product: shopProducts[index],
+                product: CTSPs[index],
               )),
     );
   }
@@ -43,8 +52,9 @@ class ShopProduct extends StatelessWidget {
     required this.product,
     required this.press,
   }) : super(key: key);
-  final Product product;
+  final ChiTietSanPham product;
   final VoidCallback press;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -59,13 +69,13 @@ class ShopProduct extends StatelessWidget {
           children: [
             Image.asset(product.image),
             Text(
-              product.title,
+              product.tenSp,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             Row(
               children: [
                 Text(
-                  "\$${product.price}",
+                  "\$${product.dongia}",
                   style: const TextStyle(
                       color: kPrimaryColor,
                       fontSize: 14,
@@ -76,12 +86,12 @@ class ShopProduct extends StatelessWidget {
                   height: 10.0,
                 ),
                 const Icon(
-                  Icons.star,
+                  Icons.inventory_2_outlined,
                   size: 20,
                   color: kPrimaryColor,
                 ),
                 Text(
-                  "${product.rating}",
+                  "${product.soluong}",
                   style: const TextStyle(
                     color: kPrimaryColor,
                     fontSize: 14,

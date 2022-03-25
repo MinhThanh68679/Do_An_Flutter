@@ -48,6 +48,21 @@ namespace WebAPI.Controllers
             }
         }
 
+        [HttpPost("AddListBill")]
+        public async Task<IActionResult> AddListBill(AddListBill_request request)
+        {
+            try
+            {
+                var result = await _service.AddBill(request);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         [HttpGet("Bill/{Id}")]
         public async Task<IActionResult> GetList_Bill_ByIdUser(String Id)
         {
@@ -107,6 +122,20 @@ namespace WebAPI.Controllers
             try
             {
                 var result = await _service.GetList_Cart_ByIdUser(Id);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost("AddCart")]
+        public async Task<IActionResult> AddItemCart(AddCart_request request)
+        {
+            try
+            {
+                var result = await _service.AddCart(request);
                 return Ok(result);
             }
             catch (Exception)

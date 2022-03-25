@@ -2,9 +2,35 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:app_quan_ao/constant.dart';
 import 'package:app_quan_ao/pages/registration_screens/components/social_login_btn.dart';
+import 'package:app_quan_ao/model/CKhachHang.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'login_screen.dart';
 
+Future<User> createUser(String email, String pass, String name, String phone) async {
+  final response = await http.post(Uri.parse('https://localhost:44313/Api/Customer/Register'),
+  headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'email': email,
+      'pass' : pass,
+      'name' : name,
+      'phone': phone,
+    }),
+  );
+  if (response.statusCode == 200) {
+    // If the server did return a 201 CREATED response,
+    // then parse the JSON.
+    return User.fromJson(jsonDecode(response.body));
+  } else {
+    // If the server did not return a 201 CREATED response,
+    // then throw an exception.
+    throw Exception('Failed to create user.');
+  }
+}
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
@@ -17,8 +43,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   var emailTextController = TextEditingController();
   var passwordTextController = TextEditingController();
   var confirmpasswordTextController = TextEditingController();
-  var firstName = TextEditingController();
-  var lastName = TextEditingController();
+  var nameTextController = TextEditingController();
+  var phoneTextController = TextEditingController();
   bool isvisible = true;
   bool confirmisvisible = true;
   @override
@@ -87,17 +113,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         borderRadius: BorderRadius.circular(50),
                       ),
                       child: TextFormField(
-                        controller: firstName,
+                        controller: nameTextController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Enter First Name";
+                            return "Enter Your Name";
                           }
 
                           return null;
                         },
                         decoration: const InputDecoration(
                           suffixIcon: Icon(Icons.person_outline),
-                          hintText: "First Name",
+                          hintText: "Name",
                           enabledBorder: InputBorder.none,
                           focusedBorder: InputBorder.none,
                         ),
@@ -113,17 +139,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         borderRadius: BorderRadius.circular(50),
                       ),
                       child: TextFormField(
-                        controller: lastName,
+                        controller: phoneTextController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Enter Last Name";
+                            return "Enter Your Phone";
                           }
 
                           return null;
                         },
                         decoration: const InputDecoration(
-                          suffixIcon: Icon(Icons.person_outline),
-                          hintText: "Last Name",
+                          suffixIcon: Icon(Icons.phone_android_sharp),
+                          hintText: "Phone",
                           enabledBorder: InputBorder.none,
                           focusedBorder: InputBorder.none,
                         ),
@@ -224,8 +250,44 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         borderRadius: BorderRadius.circular(50),
                       ),
                       height: 50,
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {}
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          final response = await http.post(Uri.parse('https://localhost:44313/Api/Customer/Register'),
+                            headers: <String, String>{
+                                'Content-Type': 'application/json; charset=UTF-8',
+                              },
+                              body: jsonEncode(<String, String>{
+                                'email': emailTextController.text,
+                                'pass' : passwordTextController.text,
+                                'name' : nameTextController.text,
+                                'phone': phoneTextController.text,
+                              }),
+                            );
+                            if (response.statusCode == 200) {                                                      
+                              showDialog(
+                                context: context, 
+                                builder: (context) => AlertDialog(
+                                  title: const Text('Thông Báo'),
+                                  content: const Text('Đăng ký thành công'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context,'Cancel'), 
+                                      child: const Text('Cancel')
+                                    ),
+                                    TextButton(
+                                      onPressed: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => const LoginScreen())), 
+                                      child: const Text('Ok')
+                                    ),
+                                  ],
+                                )
+                              );
+                            } else {
+                              throw Exception('Failed to create user.');
+                            }
+                        }
                       },
                       child: const Text(
                         "Sign Up",
@@ -279,4 +341,5 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
+
 }

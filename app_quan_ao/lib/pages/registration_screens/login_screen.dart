@@ -1,9 +1,15 @@
+import 'dart:js';
+
+import 'package:app_quan_ao/pages/profile/profile.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:app_quan_ao/constant.dart';
 import 'package:app_quan_ao/pages/Home/home_screen.dart';
 import 'package:app_quan_ao/pages/registration_screens/forgot_password.dart';
 import 'package:app_quan_ao/pages/registration_screens/signup_screen.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:app_quan_ao/model/CKhachHang.dart';
 
 import 'components/social_login_btn.dart';
 
@@ -55,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        "Not a member ?",
+                        "Không phải là thành viên ?",
                         style: TextStyle(
                           color: kTextGrayColor,
                         ),
@@ -71,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   builder: (context) => const SignUpScreen()));
                         },
                         child: const Text(
-                          "Join now",
+                          "Đăng ký",
                           style: TextStyle(
                               color: kPrimaryColor,
                               fontWeight: FontWeight.w600),
@@ -89,13 +95,14 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
+  } 
 }
 
 class TextFields extends StatefulWidget {
   const TextFields({
     Key? key,
   }) : super(key: key);
+  
 
   @override
   State<TextFields> createState() => _TextFieldsState();
@@ -106,6 +113,7 @@ class _TextFieldsState extends State<TextFields> {
   var emailTextController = TextEditingController();
   var passwordTextController = TextEditingController();
   bool isvisible = true;
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -188,7 +196,7 @@ class _TextFieldsState extends State<TextFields> {
                   MaterialPageRoute(builder: (context) => ForgotPassword()));
             },
             child: const Text(
-              "Forgot Password ?",
+              "Quên mật khẩu ?",
               style: TextStyle(
                   fontSize: 14,
                   color: kPrimaryColor,
@@ -206,14 +214,41 @@ class _TextFieldsState extends State<TextFields> {
               borderRadius: BorderRadius.circular(50),
             ),
             height: 50,
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()));
-              }
+            onPressed: () async {
+              final response = await http.post(Uri.parse('https://localhost:44313/Api/Customer/Login'),
+                headers: <String, String>{
+                    'Content-Type': 'application/json; charset=UTF-8',
+                  },
+                  body: jsonEncode(<String, String>{
+                    'user': emailTextController.text,
+                    'pass' : passwordTextController.text,
+                  }),
+                );
+                if (response.statusCode == 200) { 
+                  var createUser = User.fromJson(jsonDecode(response.body));
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => ProfileScreen(customer: createUser,)));
+                } else {
+                  showDialog(
+                    context: context, 
+                    builder: (context) => AlertDialog(
+                      title: const Text('Thông Báo'),
+                      content: const Text('Tài Khoản hoặc mật khẩu không chính xác'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context,'Cancel'), 
+                          child: const Text('Cancel')
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context,'Ok'), 
+                          child: const Text('Ok')
+                        ),
+                      ],
+                    )
+                  );
+                }              
             },
             child: const Text(
-              "Login",
+              "Đăng nhập",
               style: TextStyle(
                 color: kWhiteColor,
                 fontSize: 16,
@@ -223,5 +258,6 @@ class _TextFieldsState extends State<TextFields> {
         ],
       ),
     );
-  }
+  } 
 }
+ 
